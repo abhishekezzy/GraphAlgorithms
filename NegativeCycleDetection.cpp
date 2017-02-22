@@ -3,30 +3,33 @@
 using namespace std;
 int main()
 {
-	long long int n, m, flag = 0, max = 100000000000000;
+	int n, m, flag = 0, max = 100000000;
 	cin >> n >> m;
-	vector < vector <long long int> > v(m); 
-	vector < vector <long long int> > vtemp(n + 1); 
-	vector <long long int>::iterator it;
-	for(long long int i = 0; i < m; i++)
+	vector < vector <int> > v(m); 
+	vector < vector <int> > vtemp(n + 1); 
+	vector <int>::iterator it;
+	
+	for(int i = 0; i < m; i++)
 	{
-		long long int x, y, z;
+		int x, y, z;
 		cin >> x >> y >> z;
 		v[i].push_back(x);
 		v[i].push_back(y);
 		v[i].push_back(z);
 		vtemp[x].push_back(y);
 	}
+	
 	int visited[n + 1];
-	for(long long int i = 1; i<= n; i++)
+	for(int i = 1; i<= n; i++)
 		visited[i] = 0;
 		
-	long long int dist[n + 1];
-	for(long long int i = 1; i<= n; i++)
+	int dist[n + 1];
+	for(int i = 1; i<= n; i++)
 		dist[i] = max;
 		
 	stack <int> s2;
 	stack <int> s1;
+	
 	for(int i = 1;i <= n; i++)
 	{
 		if(visited[i]==0)
@@ -47,7 +50,7 @@ int main()
 						break;
 					}
 				}
-				//Reverse order processing (Topological Sort trick)
+				//Reverse order processing (Topological Sort)
 				if(flag == 0)
 				{
 					s2.push(k);
@@ -55,43 +58,39 @@ int main()
 				}
 			}	
 		}
-	}	
-	dist[s2.top()] = 0;	
+	}
 	
+	dist[s2.top()] = 0;	
 	flag = 0;
-	//for(int i = 1; i <= n; i++)
-	//	cout << dist[i]<<" ";	
-	for(long long int j = 1; j <= n-1; j++)
+	
+	//Bellman Ford Algorithm to detect negative cycle
+	for(int j = 1; j <= n-1; j++)
 	{
-		for(long long int i = 0; i < m; i++)
+		for(int i = 0; i < m; i++)
 		{
-			long long int u1 = v[i][0];
-			long long int v1 = v[i][1];
-			long long int w1 = v[i][2];
+			int u1 = v[i][0];
+			int v1 = v[i][1];
+			int w1 = v[i][2];
 			if( dist[u1] + w1 < dist[v1])
 				dist[v1] = dist[u1] + w1;
 		}
 	}
-	//for(int i = 1; i <= n; i++)
-	//	cout << dist[i]<<" ";
-	//cout<<endl;
-	for(long long int i = 0; i < m; i++)
+
+	for(int i = 0; i < m; i++)
 	{
-		long long int u1 = v[i][0];
-		long long int v1 = v[i][1];
-		long long int w1 = v[i][2];
+		int u1 = v[i][0];
+		int v1 = v[i][1];
+		int w1 = v[i][2];
 		if( dist[u1] + w1 < dist[v1])
 		{
 			flag = 1;
 			break;
 		}
 	}
-	//for(int i = 1; i <= n; i++)
-	//	cout << dist[i]<<" ";
-//	cout<<endl;
+	
 	if(flag == 1)
-		cout <<"1" <<endl;
+		cout <<"Negative Cycle" <<endl;
 	else
-		cout <<"0"<<endl;	
+		cout <<"No Negative Cycle"<<endl;	
 }
 
