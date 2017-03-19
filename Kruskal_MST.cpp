@@ -52,7 +52,7 @@ class disjointSet
 
 int main()
 {
-	int n, m, mst;
+	int n, m, mst = 0;
 	std::cin >> n >> m;
 	std::vector < std::pair <int, std::pair <int, int> > > v(m);
 	disjointSet ds(n);
